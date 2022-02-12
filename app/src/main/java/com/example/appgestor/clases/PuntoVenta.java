@@ -1,8 +1,8 @@
 package com.example.appgestor.clases;
 
 public class PuntoVenta {
-    String nombre, codigo, dirección;
-    Double latitud, longitud;
+    private String nombre, codigo, dirección;
+    private Double latitud, longitud;
 
     public PuntoVenta(String nombre, String codigo, String dirección, Double latitud, Double longitud) {
         this.nombre = nombre;

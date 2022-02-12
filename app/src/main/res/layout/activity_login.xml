@@ -52,9 +52,13 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="40dp"
+            android:backgroundTint="@android:color/black"
             android:ems="10"
+            android:hint="Usuario"
             android:inputType="textPersonName"
-            android:textColor="@android:color/background_dark" />
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark"
+            android:textCursorDrawable="@android:color/black" />
 
         <EditText
             android:id="@+id/txtPassword"
@@ -63,8 +67,12 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="40dp"
+            android:backgroundTint="@android:color/black"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textCursorDrawable="@android:color/black" />
 
         <Button
             android:id="@+id/btnLogin"

@@ -1,46 +1,71 @@
 package com.example.appgestor.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import com.example.appgestor.MapsActivity;
 import com.example.appgestor.R;
 import com.example.appgestor.clases.PuntoVenta;
 
 import java.util.ArrayList;
 
-public class ListPuntoVentaAdapter extends ArrayAdapter<PuntoVenta> {
+public class ListPuntoVentaAdapter extends BaseAdapter {
 
-    public ListPuntoVentaAdapter(Context context, ArrayList<PuntoVenta> puntoVentaArrayList){
-        super(context, R.layout.item_list_punto_venta, puntoVentaArrayList);
-
-
+    private Context context;
+    private int layout;
+    private ArrayList<PuntoVenta> listPV;
+    public ListPuntoVentaAdapter(Context context, int layout, ArrayList<PuntoVenta> listPV){
+        this.context = context;
+        this.layout = layout;
+        this.listPV = listPV;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        PuntoVenta pv = getItem(position);
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list_punto_venta, parent, false);
-        }
+    public int getCount() {
+        return this.listPV.size();
+    }
 
-        TextView txtNombre = convertView.findViewById(R.id.txtNombre);
-        TextView txtCodigo = convertView.findViewById(R.id.txtCodigo);
-        TextView txtDireccion = convertView.findViewById(R.id.txtDirección);
+    @Override
+    public Object getItem(int position) {
+        return this.listPV.get(position);
+    }
 
-        txtNombre.setText(pv.getNombre());
-        txtCodigo.setText((pv.getCodigo()));
-        txtDireccion.setText(pv.getDirección());
+    @Override
+    public long getItemId(int id) {
+        return id;
+    }
+
+    @Override
+
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
+        View v = convertView;
+
+        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+
+        v= layoutInflater.inflate(R.layout.item_list_punto_venta, null);
 
 
+        String nombre  = listPV.get(position).getNombre();
 
-        return super.getView(position, convertView, parent);
+
+        TextView txtNombrePV = (TextView) v.findViewById(R.id.txtNombre_Item);
+        ImageView imgLocation = (ImageView) v.findViewById(R.id.imgLocation_Item);
+        txtNombrePV.setText(nombre);
+
+        imgLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MapsActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
+        return v;
     }
 }

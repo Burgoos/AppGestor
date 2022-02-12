@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_punto_venta">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_punto_venta"
         android:name="com.example.appgestor.ui.puntoVenta.PuntoVentaFragment"
         android:label="@string/puntos_venta"
         tools:layout="@layout/fragment_punto_venta"/>
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_soporte"
         android:name="com.example.appgestor.ui.soporte.SoporteFragment"
         android:label="@string/soporte"
         tools:layout="@layout/fragment_soporte" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_cerrar_sesion"
         android:name="com.example.appgestor.ui.slideshow.SlideshowFragment"
         android:label="@string/cerrar_sesión"
         tools:layout="@layout/fragment_slideshow" />

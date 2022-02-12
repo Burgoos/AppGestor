@@ -8,7 +8,7 @@
     android:padding="10dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgLocation_Item"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="10dp"
@@ -21,7 +21,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtNombre"
+            android:id="@+id/txtNombre_Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -29,14 +29,14 @@
             tools:text="YOSLY ALMALI SEGUILAR" />
 
         <TextView
-            android:id="@+id/txtCodigo"
+            android:id="@+id/txtCodigo_Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             tools:text="Código: 409183" />
 
         <TextView
-            android:id="@+id/txtDirección"
+            android:id="@+id/txtDirección_Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="REAL S/N Urb: ESQ. 10 NOVIEMBRE" />
