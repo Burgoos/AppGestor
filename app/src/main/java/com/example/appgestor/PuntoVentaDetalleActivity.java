@@ -22,9 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appgestor.clases.PuntoVenta;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -33,17 +36,30 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
 
     ImageView imgCamara;
+    TextView txtNombre;
+    TextView txtDireccion;
+    PuntoVenta pv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_punto_venta_detalle);
 
+
+
         ActionBar actionBar = getSupportActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         imgCamara = findViewById(R.id.imgCamara);
+        txtNombre = findViewById(R.id.txtNombrePV);
+        txtDireccion = findViewById(R.id.txtDireccionPV);
+
+        if(getIntent().getExtras() != null) {
+            pv = (PuntoVenta) getIntent().getSerializableExtra("puntoVenta");
+            txtNombre.setText(pv.getNombre());
+            txtDireccion.setText(pv.getDirección());
+        }
 
         imgCamara.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)

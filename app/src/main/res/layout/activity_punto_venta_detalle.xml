@@ -14,8 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:textAlignment="center"
         android:textColor="@android:color/background_dark"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Metro Alfonso Ugarte" />
 
@@ -23,6 +24,7 @@
         android:id="@+id/txtDireccionPV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textColor="@android:color/background_dark"
         android:textSize="14sp"
         tools:text="AV. ALFONSO UGARTE 740" />
@@ -31,7 +33,7 @@
         android:id="@+id/imgCamara"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         app:srcCompat="@drawable/foto" />
 

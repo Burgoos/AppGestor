@@ -1,14 +1,23 @@
 package com.example.appgestor.clases;
 
 public class Usuario {
-    private String nombre, correo, foto;
+    private String nombre, correo, foto, password;
     private int id;
 
-    public Usuario(String nombre, String correo, String foto, int id) {
+    public Usuario(String nombre, String correo, String foto, String password, int id) {
         this.nombre = nombre;
         this.correo = correo;
         this.foto = foto;
+        this.password = password;
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNombre() {

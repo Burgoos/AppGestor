@@ -1,9 +1,14 @@
 package com.example.appgestor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.appgestor.ui.soporte.SoporteFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -20,12 +25,24 @@ import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences myPreferences;
+    SharedPreferences.Editor myEditor;
     private AppBarConfiguration mAppBarConfiguration;
+
+    ImageView imgNavigationDrawer;
+    TextView txtNombreNavigationDrawer, txtCorreoNavigationDrawer;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myPreferences =  PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        myEditor = myPreferences.edit();
+
+        String nombre = myPreferences.getString("nombreUsuario", "");
+        String correo = myPreferences.getString("correoUsuario", "");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -41,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //NavigationView navigationHeaderView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        txtNombreNavigationDrawer =  (TextView) headerView.findViewById(R.id.txtNombreNavigationDrawer);
+        txtCorreoNavigationDrawer = (TextView) headerView.findViewById(R.id.txtCorreoNavigationDrawer);
+        txtNombreNavigationDrawer.setText(nombre);
+        txtCorreoNavigationDrawer.setText(correo);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -49,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_soporte:
                         return true;
                     case R.id.nav_cerrar_sesion:
+                        myEditor.putString("idUsuario", "");
+                        myEditor.putString("nombreUsuario", "");
+                        myEditor.putString("correoUsuario", "");
+                        myEditor.putString("fotoUsuario", "");
+                        myEditor.commit();
+                        finish();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         return true;

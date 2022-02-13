@@ -1,15 +1,26 @@
 package com.example.appgestor.clases;
 
-public class PuntoVenta {
-    private String nombre, codigo, dirección;
+import java.io.Serializable;
+
+public class PuntoVenta implements Serializable {
+    private String nombre, codigo, dirección, foto;
     private Double latitud, longitud;
 
-    public PuntoVenta(String nombre, String codigo, String dirección, Double latitud, Double longitud) {
+    public PuntoVenta(String codigo, String nombre, String dirección, Double latitud, Double longitud, String foto) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.dirección = dirección;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.foto = foto;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public String getNombre() {

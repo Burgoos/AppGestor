@@ -43,25 +43,32 @@ public class ListPuntoVentaAdapter extends BaseAdapter {
 
     @Override
 
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
         View v = convertView;
 
         LayoutInflater layoutInflater = LayoutInflater.from(this.context);
 
-        v= layoutInflater.inflate(R.layout.item_list_punto_venta, null);
+        v = layoutInflater.inflate(R.layout.item_list_punto_venta, null);
 
 
         String nombre  = listPV.get(position).getNombre();
+        String codigo = listPV.get(position).getCodigo();
+        String direccion = listPV.get(position).getDirección();
 
+        TextView txtNombre = (TextView) v.findViewById(R.id.txtNombre_Item);
+        TextView txtDireccion = (TextView) v.findViewById(R.id.txtDirección_Item);
+        TextView txtCodigo = (TextView) v.findViewById(R.id.txtCodigo_Item);
 
-        TextView txtNombrePV = (TextView) v.findViewById(R.id.txtNombre_Item);
         ImageView imgLocation = (ImageView) v.findViewById(R.id.imgLocation_Item);
-        txtNombrePV.setText(nombre);
+        txtNombre.setText(nombre);
+        txtDireccion.setText(direccion);
+        txtCodigo.setText(codigo);
 
         imgLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("puntoVenta", listPV.get(position));
                 context.startActivity(intent);
             }
         });
