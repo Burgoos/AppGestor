@@ -4,11 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.puntoVenta.PuntoVentaFragment">
+
+    <EditText
+        android:id="@+id/txtBuscarPuntoVenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_buscar"
+        android:drawableStart="@drawable/buscar"
+        android:drawablePadding="20dp"
+        android:ems="10"
+        android:hint="@string/buscar"
+        android:inputType="textPersonName"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@android:color/black"
+        android:textCursorDrawable="@android:color/black" />
 
     <ListView
         android:id="@+id/lstPuntoVenta"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_list_punto_venta"/>
+        tools:listitem="@layout/item_list_punto_venta" />
 </LinearLayout>

@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,7 +35,9 @@ public class PuntoVentaFragment extends Fragment {
     private PuntoVentaViewModel puntoVentaViewModel;
 
     ListView lstViewPuntoVenta;
+    EditText txtBuscar;
     ArrayList<PuntoVenta> listPuntoVenta;
+    ListPuntoVentaAdapter myAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,14 +45,28 @@ public class PuntoVentaFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_punto_venta, container, false);
 
         lstViewPuntoVenta = root.findViewById(R.id.lstPuntoVenta);
+        txtBuscar = root.findViewById(R.id.txtBuscarPuntoVenta);
 
         consultarPuntoVentas();
 
+        txtBuscar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        /*myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, newList);
-        lstPuntoVenta.setAdapter(myAdapter);
-        myAdapter.notifyDataSetChanged();*/
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, buscar(charSequence));
+                lstViewPuntoVenta.setAdapter(myAdapter);
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         lstViewPuntoVenta.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,6 +96,16 @@ public class PuntoVentaFragment extends Fragment {
         });
         return root;
     }
+
+    private  ArrayList<PuntoVenta> buscar(CharSequence charSequence){
+        ArrayList<PuntoVenta> listFilter = new ArrayList<>();
+        for (PuntoVenta pv : listPuntoVenta) {
+            if (pv.getNombre().toUpperCase().contains(charSequence.toString().toUpperCase())){
+                listFilter.add(pv);
+            }
+        }
+        return listFilter;
+    }
     private void consultarPuntoVentas(){
         Log.d("Consulta", "Entra consulta");
         BDHelper bdHelper = new BDHelper(getContext(), null);
@@ -98,7 +127,7 @@ public class PuntoVentaFragment extends Fragment {
             listPuntoVenta.add(pv);
         }
 
-        ListPuntoVentaAdapter myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listPuntoVenta);
+        myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listPuntoVenta);
         lstViewPuntoVenta.setAdapter(myAdapter);
     }
 }

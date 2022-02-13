@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         correo = myPreferences.getString("correoUsuario", "");
 
         //this.deleteDatabase("gestor.db");
-        insertInicial();
+        //insertInicial();
         cargarSplash();
     }
 

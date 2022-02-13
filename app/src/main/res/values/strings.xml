@@ -10,6 +10,7 @@
     <string name="puntos_venta">Puntos de venta</string>
     <string name="soporte">Soporte</string>
     <string name="cerrar_sesión">Cerrar sesión</string>
+    <string name="buscar">Buscar</string>
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_maps">Map</string>
