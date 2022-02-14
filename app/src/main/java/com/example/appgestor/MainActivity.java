@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_punto_venta:
+                        return true;
                     case R.id.nav_soporte:
                         Intent i = new Intent(MainActivity.this, SoporteActivity.class);
                         startActivity(i);
