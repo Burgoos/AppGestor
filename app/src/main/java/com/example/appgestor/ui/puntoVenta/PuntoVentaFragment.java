@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,8 +26,10 @@ import com.example.appgestor.LoginActivity;
 import com.example.appgestor.PuntoVentaDetalleActivity;
 import com.example.appgestor.R;
 import com.example.appgestor.adapters.ListPuntoVentaAdapter;
+import com.example.appgestor.clases.DbBitmapUtility;
 import com.example.appgestor.clases.PuntoVenta;
 import com.example.appgestor.db.BDHelper;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -36,8 +39,10 @@ public class PuntoVentaFragment extends Fragment {
 
     ListView lstViewPuntoVenta;
     EditText txtBuscar;
-    ArrayList<PuntoVenta> listPuntoVenta;
+    ArrayList<PuntoVenta> listPuntoVenta, listFilterPuntoVenta;
     ListPuntoVentaAdapter myAdapter;
+    Boolean filter=false;
+    CharSequence charSeq="";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,9 +62,19 @@ public class PuntoVentaFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, buscar(charSequence));
-                lstViewPuntoVenta.setAdapter(myAdapter);
-                myAdapter.notifyDataSetChanged();
+                charSeq = charSequence;
+                if(charSequence.length()>0){
+                    listFilterPuntoVenta = buscar(charSequence);
+                    myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listFilterPuntoVenta);
+                    lstViewPuntoVenta.setAdapter(myAdapter);
+                    filter = true;
+                    myAdapter.notifyDataSetChanged();
+                }else{
+                    myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listPuntoVenta);
+                    lstViewPuntoVenta.setAdapter(myAdapter);
+                    filter = false;
+                    myAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -78,11 +93,21 @@ public class PuntoVentaFragment extends Fragment {
                 dialog.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PuntoVenta objeto = listPuntoVenta.get(i);
-                        Intent intent = new Intent(getContext(), PuntoVentaDetalleActivity.class);
-                        intent.putExtra("puntoVenta", objeto);
-                        dialog.dismiss();
-                        startActivity(intent);
+                        if(filter){
+                            Gson gson = new Gson();
+                            PuntoVenta objeto = listFilterPuntoVenta.get(i);
+                            Intent intent = new Intent(getContext(), PuntoVentaDetalleActivity.class);
+                            intent.putExtra("puntoVenta", gson.toJson(objeto));
+                            dialog.dismiss();
+                            startActivity(intent);
+                        }else{
+                            Gson gson = new Gson();
+                            PuntoVenta objeto = listPuntoVenta.get(i);
+                            Intent intent = new Intent(getContext(), PuntoVentaDetalleActivity.class);
+                            intent.putExtra("puntoVenta", gson.toJson(objeto));
+                            dialog.dismiss();
+                            startActivity(intent);
+                        }
                     }
                 });
                 dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -95,6 +120,23 @@ public class PuntoVentaFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(charSeq.length()>0){
+            listFilterPuntoVenta = buscar(charSeq);
+            myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listFilterPuntoVenta);
+            lstViewPuntoVenta.setAdapter(myAdapter);
+            filter = true;
+            myAdapter.notifyDataSetChanged();
+        }else{
+            myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listPuntoVenta);
+            lstViewPuntoVenta.setAdapter(myAdapter);
+            filter = false;
+            myAdapter.notifyDataSetChanged();
+        }
     }
 
     private  ArrayList<PuntoVenta> buscar(CharSequence charSequence){
@@ -123,7 +165,15 @@ public class PuntoVentaFragment extends Fragment {
                     cursor.getString(2),
                     cursor.getDouble(3),
                     cursor.getDouble(4),
-                    cursor.getString(5));
+                    null
+            );
+            if(cursor.getBlob(5)!=null){
+                Bitmap foto = DbBitmapUtility.getImage(cursor.getBlob(5));
+                pv.setFoto(foto);
+            }else{
+                Bitmap foto = null;
+                pv.setFoto(foto);
+            }
             listPuntoVenta.add(pv);
         }
 

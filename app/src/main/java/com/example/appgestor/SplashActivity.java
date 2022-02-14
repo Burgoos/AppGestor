@@ -28,11 +28,10 @@ public class SplashActivity extends AppCompatActivity {
 
         correo = myPreferences.getString("correoUsuario", "");
 
-        //this.deleteDatabase("gestor.db");
-        //insertInicial();
+        this.deleteDatabase("gestor.db");
+        insertInicial();
         cargarSplash();
     }
-
 
     void cargarSplash(){
         new Handler().postDelayed(new Runnable(){
@@ -57,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
         registroUsuario.put("nombre", "Alexander Burgos Saba");
         registroUsuario.put("correo", "burgos@gmail.com");
         registroUsuario.put("password", "123456");
-        registroUsuario.put("foto", "");
+        registroUsuario.putNull("foto");
         bd.insert(bdHelper.getTableUsuario(),null, registroUsuario);
 
         ContentValues registroPuntoVenta = new ContentValues();
@@ -66,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
         registroPuntoVenta.put("direccion", "REAL S/N Urb: ESQ. 10 NOVIEMBRE");
         registroPuntoVenta.put("latitud", "-12.041749");
         registroPuntoVenta.put("longitud", "-77.075564");
-        registroPuntoVenta.put("foto", "");
+        registroPuntoVenta.putNull("foto");
         bd.insert(bdHelper.getTablePuntoVenta(),null, registroPuntoVenta);
 
         ContentValues registroPuntoVenta2 = new ContentValues();
@@ -75,6 +74,7 @@ public class SplashActivity extends AppCompatActivity {
         registroPuntoVenta2.put("direccion", "AV. ALFONSO UGARTE 740");
         registroPuntoVenta2.put("latitud", "-12.106730");
         registroPuntoVenta2.put("longitud", "-76.996891");
+        registroPuntoVenta2.putNull("foto");
         bd.insert(bdHelper.getTablePuntoVenta(),null, registroPuntoVenta2);
 
         ContentValues registroPuntoVenta3 = new ContentValues();
@@ -83,6 +83,7 @@ public class SplashActivity extends AppCompatActivity {
         registroPuntoVenta3.put("direccion", "AV. COLONIAL 1520");
         registroPuntoVenta3.put("latitud", "-12.069397");
         registroPuntoVenta3.put("longitud", "-77.162514");
+        registroPuntoVenta3.putNull("foto");
         bd.insert(bdHelper.getTablePuntoVenta(),null, registroPuntoVenta3);
 
         bd.close();

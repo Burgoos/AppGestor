@@ -1,12 +1,15 @@
 package com.example.appgestor.clases;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class PuntoVenta implements Serializable {
-    private String nombre, codigo, dirección, foto;
+    private String nombre, codigo, dirección;
+    Bitmap foto;
     private Double latitud, longitud;
 
-    public PuntoVenta(String codigo, String nombre, String dirección, Double latitud, Double longitud, String foto) {
+    public PuntoVenta(String codigo, String nombre, String dirección, Double latitud, Double longitud, Bitmap foto) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.dirección = dirección;
@@ -15,11 +18,11 @@ public class PuntoVenta implements Serializable {
         this.foto = foto;
     }
 
-    public String getFoto() {
+    public Bitmap getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Bitmap foto) {
         this.foto = foto;
     }
 

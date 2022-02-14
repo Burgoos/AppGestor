@@ -25,14 +25,14 @@ public class BDHelper extends SQLiteOpenHelper {
                 "nombre TEXT NOT NULL," +
                 "correo TEXT NOT NULL," +
                 "password TEXT NOT NULL," +
-                "foto TEXT)");
+                "foto BLOB)");
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_PUNTO_VENTA + "(" +
                 "codigo TEXT PRIMARY KEY," +
                 "nombre TEXT NOT NULL," +
                 "direccion TEXT NOT NULL," +
                 "latitud DECIMAL(10,8) NOT NULL," +
                 "longitud DECIMAL(11,8) NOT NULL," +
-                "foto TEXT)");
+                "foto BLOB)");
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_PRODUCTOS + "(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombre TEXT NOT NULL," +
