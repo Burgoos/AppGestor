@@ -1,23 +1,17 @@
 package com.example.appgestor.clases;
 
+import android.graphics.Bitmap;
+
 public class Usuario {
-    private String nombre, correo, foto, password;
+    private String nombre, correo;
+    Bitmap foto;
     private int id;
 
-    public Usuario(String nombre, String correo, String foto, String password, int id) {
+    public Usuario(int id, String nombre, String correo, Bitmap foto) {
         this.nombre = nombre;
         this.correo = correo;
         this.foto = foto;
-        this.password = password;
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNombre() {
@@ -36,11 +30,11 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getFoto() {
+    public Bitmap getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Bitmap foto) {
         this.foto = foto;
     }
 

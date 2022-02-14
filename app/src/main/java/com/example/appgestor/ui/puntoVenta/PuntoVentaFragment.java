@@ -125,6 +125,7 @@ public class PuntoVentaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        consultarPuntoVentas();
         if(charSeq.length()>0){
             listFilterPuntoVenta = buscar(charSeq);
             myAdapter = new ListPuntoVentaAdapter(getContext(), R.layout.item_list_punto_venta, listFilterPuntoVenta);

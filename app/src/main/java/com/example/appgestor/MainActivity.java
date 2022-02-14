@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_soporte:
                         return true;
                     case R.id.nav_cerrar_sesion:
-                        myEditor.putString("idUsuario", "");
+                        myEditor.putInt("idUsuario", -1);
                         myEditor.putString("nombreUsuario", "");
                         myEditor.putString("correoUsuario", "");
                         myEditor.putString("fotoUsuario", "");

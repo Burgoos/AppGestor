@@ -56,10 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                     " AND password = '" + txtPassword.getText().toString().trim() + "'", null);
 
             if(fila.moveToFirst()){
-                myEditor.putString("idUsuario", fila.getString(0));
+                myEditor.putInt("idUsuario", fila.getInt(0));
                 myEditor.putString("nombreUsuario", fila.getString(1));
                 myEditor.putString("correoUsuario", fila.getString(2));
-                myEditor.putString("fotoUsuario", fila.getString(4));
                 myEditor.commit();
                 finish();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

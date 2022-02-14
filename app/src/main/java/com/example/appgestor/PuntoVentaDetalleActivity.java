@@ -73,7 +73,7 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
             pv = gson.fromJson(getIntent().getStringExtra("puntoVenta"),PuntoVenta.class);
             txtNombre.setText(pv.getNombre());
             txtDireccion.setText(pv.getDirección());
-            Toast.makeText(PuntoVentaDetalleActivity.this, pv.getCodigo(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(PuntoVentaDetalleActivity.this, ""+pv.getFoto(), Toast.LENGTH_SHORT).show();
             if(pv.getFoto()!=null){
                 loadImageFromBD();
             }
@@ -113,14 +113,10 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
         SQLiteDatabase bd = bdHelper.getWritableDatabase();
 
         ContentValues registroPuntoVenta = new ContentValues();
-        registroPuntoVenta.put("codigo", pv.getCodigo());
-        registroPuntoVenta.put("nombre", pv.getNombre());
-        registroPuntoVenta.put("direccion", pv.getDirección());
-        registroPuntoVenta.put("latitud", pv.getLatitud());
-        registroPuntoVenta.put("longitud", pv.getLongitud());
+
         registroPuntoVenta.put("foto", DbBitmapUtility.getBytes(pv.getFoto()));
 
-        int cantidad = bd.update(bdHelper.getTablePuntoVenta(), registroPuntoVenta, "codigo = " + pv.getCodigo(), null);
+        int cantidad = bd.update(bdHelper.getTablePuntoVenta(), registroPuntoVenta, "codigo = '" + pv.getCodigo() + "'", null);
         bd.close();
 
         if(cantidad==1){
