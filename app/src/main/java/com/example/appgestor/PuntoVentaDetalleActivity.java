@@ -73,7 +73,6 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
             pv = gson.fromJson(getIntent().getStringExtra("puntoVenta"),PuntoVenta.class);
             txtNombre.setText(pv.getNombre());
             txtDireccion.setText(pv.getDirección());
-            Toast.makeText(PuntoVentaDetalleActivity.this, ""+pv.getFoto(), Toast.LENGTH_SHORT).show();
             if(pv.getFoto()!=null){
                 loadImageFromBD();
             }
@@ -108,7 +107,6 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
     }
 
     public void updateFoto(){
-        Toast.makeText(PuntoVentaDetalleActivity.this,"Entra Update", Toast.LENGTH_SHORT).show();
         BDHelper bdHelper = new BDHelper(PuntoVentaDetalleActivity.this, null);
         SQLiteDatabase bd = bdHelper.getWritableDatabase();
 

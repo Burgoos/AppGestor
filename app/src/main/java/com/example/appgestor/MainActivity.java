@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_punto_venta:
                     case R.id.nav_soporte:
+                        Intent i = new Intent(MainActivity.this, SoporteActivity.class);
+                        startActivity(i);
                         return true;
                     case R.id.nav_cerrar_sesion:
                         myEditor.putInt("idUsuario", -1);
