@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
     TextView txtNombre;
     TextView txtDireccion;
     PuntoVenta pv;
+    Button btnVisitar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
         imgCamara = findViewById(R.id.imgCamara);
         txtNombre = findViewById(R.id.txtNombrePV);
         txtDireccion = findViewById(R.id.txtDireccionPV);
+        btnVisitar = findViewById(R.id.btnVisitar);
 
         if(!getIntent().getStringExtra("puntoVenta").equals("")) {
             Gson gson = new Gson();
@@ -76,6 +79,15 @@ public class PuntoVentaDetalleActivity extends AppCompatActivity {
             }
         }
 
+        btnVisitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Gson gson = new Gson();
+                Intent intent = new Intent(PuntoVentaDetalleActivity.this, ReportePreciosActivity.class);
+                intent.putExtra("puntoVenta", gson.toJson(pv));
+                startActivity(intent);
+            }
+        });
         imgCamara.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override

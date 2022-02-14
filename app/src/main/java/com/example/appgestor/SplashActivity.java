@@ -86,6 +86,27 @@ public class SplashActivity extends AppCompatActivity {
         registroPuntoVenta3.putNull("foto");
         bd.insert(bdHelper.getTablePuntoVenta(),null, registroPuntoVenta3);
 
+        ContentValues registroProducto = new ContentValues();
+        registroProducto.put("nombre", "Aceite Cilx12 Bot");
+        registroProducto.put("p_costo", "45.23");
+        registroProducto.put("p_mayor", "45.23");
+        registroProducto.put("stock", "100");
+        bd.insert(BDHelper.getTableProductos(), null, registroProducto);
+
+        ContentValues registroProducto2 = new ContentValues();
+        registroProducto2.put("nombre", "Aceite Primorx12 Bot");
+        registroProducto2.put("p_costo", "42.00");
+        registroProducto2.put("p_mayor", "45.23");
+        registroProducto2.put("stock", "100");
+        bd.insert(BDHelper.getTableProductos(), null, registroProducto2);
+
+        ContentValues registroProducto3 = new ContentValues();
+        registroProducto3.put("nombre", "Aceite Saox12 Bot");
+        registroProducto3.put("p_costo", "41.50");
+        registroProducto3.put("p_mayor", "45.23");
+        registroProducto3.put("stock", "30");
+        bd.insert(BDHelper.getTableProductos(), null, registroProducto3);
+
         bd.close();
     }
 }

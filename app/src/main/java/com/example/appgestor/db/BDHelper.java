@@ -37,7 +37,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombre TEXT NOT NULL," +
                 "p_costo REAL NOT NULL," +
-                "P_mayor REAL NOT NULL," +
+                "p_mayor REAL NOT NULL," +
                 "stock INTEGER NOT NULL)");
     }
 

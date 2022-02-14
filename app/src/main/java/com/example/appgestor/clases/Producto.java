@@ -5,7 +5,7 @@ public class Producto {
     private float pCosto, pMayor;
     private int stock, id;
 
-    public Producto(String nombre, float pCosto, float pMayor, int stock, int id) {
+    public Producto( int id, String nombre, float pCosto, float pMayor, int stock) {
         this.nombre = nombre;
         this.pCosto = pCosto;
         this.pMayor = pMayor;
