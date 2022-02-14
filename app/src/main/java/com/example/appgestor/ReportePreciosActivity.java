@@ -3,12 +3,16 @@ package com.example.appgestor;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -27,6 +31,7 @@ import com.example.appgestor.clases.PuntoVenta;
 import com.example.appgestor.db.BDHelper;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ReportePreciosActivity extends AppCompatActivity {
@@ -36,6 +41,8 @@ public class ReportePreciosActivity extends AppCompatActivity {
     ImageView btnBack, btnSave;
     TextView txtTitle;
     PuntoVenta pv;
+    TableRow filaContenido;
+    Boolean cambio = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,96 +62,28 @@ public class ReportePreciosActivity extends AppCompatActivity {
 
         consultarProductos();
 
-        String[] cabecera = {"P. Costo", "P. Rvta Mayor", "Stock"};
+        crearTabla();
 
-        // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las cabecera
-        TableRow fila = new TableRow(ReportePreciosActivity.this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-        fila.setLayoutParams(lp);
-
-        TextView txtProductoCabecera = new TextView(ReportePreciosActivity.this);
-        txtProductoCabecera.setText("Productos");
-        txtProductoCabecera.setBackgroundResource(R.drawable.edit_text_tabla1);
-        txtProductoCabecera.setWidth(300);
-        txtProductoCabecera.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        fila.addView(txtProductoCabecera);
-
-        // Ahora agregar las cabecera
-        for (int x = 0; x < cabecera.length; x++) {
-            TextView txtCabecera = new TextView(ReportePreciosActivity.this);
-            txtCabecera.setText(cabecera[x]);
-            txtCabecera.setBackgroundResource(R.drawable.edit_text_tabla1);
-            txtCabecera.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            fila.addView(txtCabecera);
-        }
-        // Finalmente agregar la fila en la primera posición
-        tblProductos.addView(fila, 0);
-
-        // Ahora por cada color hacer casi lo mismo
-        for (int x = 0; x < listProductos.size(); x++) {
-            TableRow filaColor = new TableRow(ReportePreciosActivity.this);
-            filaColor.setLayoutParams(lp);
-            // Borde
-            //filaColor.setBackgroundResource(R.drawable.borde_tabla);
-            // El nombre del color
-            EditText txtProducto = new EditText(ReportePreciosActivity.this);
-            txtProducto.setText(listProductos.get(x).getNombre());
-            txtProducto.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            txtProducto.setWidth(300);
-            txtProducto.setBackgroundResource(R.drawable.edit_text_tabla2);
-            txtProducto.setEnabled(false);
-            txtProducto.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-            txtProducto.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            filaColor.addView(txtProducto);
-
-            // Y ahora por cada talla, agregar un campo de texto
-
-            EditText editTextCosto = new EditText(ReportePreciosActivity.this);
-            editTextCosto.setText(String.valueOf(listProductos.get(x).getpCosto()));
-            editTextCosto.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            editTextCosto.setWidth(200);
-            editTextCosto.setBackgroundResource(R.drawable.edit_text_tabla2);
-            editTextCosto.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-            editTextCosto.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            filaColor.addView(editTextCosto);
-            filaColor.setMinimumWidth(200);
-
-            EditText editTextMayor = new EditText(ReportePreciosActivity.this);
-            editTextMayor.setText(String.valueOf(listProductos.get(x).getpMayor()));
-            editTextMayor.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            editTextMayor.setWidth(200);
-            editTextMayor.setBackgroundResource(R.drawable.edit_text_tabla2);
-            editTextMayor.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-            editTextMayor.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            filaColor.addView(editTextMayor);
-            filaColor.setMinimumWidth(200);
-
-            EditText editTextStock = new EditText(ReportePreciosActivity.this);
-            editTextStock.setText(String.valueOf(listProductos.get(x).getStock()));
-            editTextStock.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            editTextStock.setWidth(200);
-            editTextStock.setBackgroundResource(R.drawable.edit_text_tabla2);
-            editTextStock.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-            editTextStock.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            filaColor.addView(editTextStock);
-            filaColor.setMinimumWidth(200);
-
-            // Finalmente agregar la fila
-            tblProductos.addView(filaColor);
-
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(cambio){
+                    updateTabla();
+                    finish();
+                    Intent intent  = new Intent(ReportePreciosActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(ReportePreciosActivity.this, "No hay cambios que guardar", Toast.LENGTH_SHORT).show();
                 }
-            });
-            btnSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                }
-            });
-        }
+            }
+        });
     }
 
     private void consultarProductos(){
@@ -168,5 +107,176 @@ public class ReportePreciosActivity extends AppCompatActivity {
             );
             listProductos.add(p);
         }
+    }
+
+    private void crearTabla(){
+        String[] cabecera = {"P. Costo", "P. Rvta Mayor", "Stock"};
+
+        TableRow fila = new TableRow(ReportePreciosActivity.this);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        fila.setLayoutParams(lp);
+
+        TextView txtProductoCabecera = new TextView(ReportePreciosActivity.this);
+        txtProductoCabecera.setText("Productos");
+        txtProductoCabecera.setBackgroundResource(R.drawable.edit_text_tabla1);
+        txtProductoCabecera.setWidth(300);
+        txtProductoCabecera.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        fila.addView(txtProductoCabecera);
+
+        for (int i = 0; i < cabecera.length; i++) {
+            TextView txtCabecera = new TextView(ReportePreciosActivity.this);
+            txtCabecera.setText(cabecera[i]);
+            txtCabecera.setBackgroundResource(R.drawable.edit_text_tabla1);
+            txtCabecera.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            fila.addView(txtCabecera);
+        }
+
+        tblProductos.addView(fila, 0);
+
+        for (int i = 0; i < listProductos.size(); i++) {
+            filaContenido = new TableRow(ReportePreciosActivity.this);
+            filaContenido.setLayoutParams(lp);
+
+            tblProductos.addView(addContenido(filaContenido, listProductos.get(i), i));
+        }
+    }
+    private TableRow addContenido(TableRow filaContenido, final Producto p, final int indice){
+
+        final DecimalFormat formateador = new DecimalFormat("######.##");
+
+        final EditText editText = new EditText(ReportePreciosActivity.this);
+        editText.setText(p.getNombre());
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editText.setWidth(300);
+        editText.setBackgroundResource(R.drawable.edit_text_tabla2);
+        editText.setEnabled(false);
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+        editText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        filaContenido.addView(editText);
+
+        final EditText editTextCosto = new EditText(ReportePreciosActivity.this);
+        editTextCosto.setText(String.valueOf(p.getpCosto()));
+        editTextCosto.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editTextCosto.setWidth(200);
+        editTextCosto.setBackgroundResource(R.drawable.edit_text_tabla2);
+        editTextCosto.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+        editTextCosto.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        filaContenido.addView(editTextCosto);
+        filaContenido.setMinimumWidth(200);
+
+        editTextCosto.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                cambio = true;
+                if (editTextCosto.getText().toString().trim().isEmpty()){
+                    listProductos.get(indice).setpCosto(0.00f);
+                }else{
+                    Float valor = Float.parseFloat(editTextCosto.getText().toString());
+                    String valorFormateado = formateador.format(valor);
+                    listProductos.get(indice).setpCosto(Float.parseFloat(valorFormateado));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        final EditText editTextMayor = new EditText(ReportePreciosActivity.this);
+        editTextMayor.setText(String.valueOf(p.getpMayor()));
+        editTextMayor.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editTextMayor.setWidth(200);
+        editTextMayor.setBackgroundResource(R.drawable.edit_text_tabla2);
+        editTextMayor.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+        editTextMayor.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        filaContenido.addView(editTextMayor);
+        filaContenido.setMinimumWidth(200);
+
+        editTextMayor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                cambio = true;
+                if (editTextMayor.getText().toString().trim().isEmpty()){
+                    listProductos.get(indice).setpMayor(0.00f);
+                }else {
+                    Float valor = Float.parseFloat(editTextMayor.getText().toString());
+                    String valorFormateado = formateador.format(valor);
+                    listProductos.get(indice).setpMayor(Float.parseFloat(valorFormateado));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        final EditText editTextStock = new EditText(ReportePreciosActivity.this);
+        editTextStock.setText(String.valueOf(p.getStock()));
+        editTextStock.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editTextStock.setWidth(200);
+        editTextStock.setBackgroundResource(R.drawable.edit_text_tabla2);
+        editTextStock.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+        editTextStock.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        filaContenido.addView(editTextStock);
+        filaContenido.setMinimumWidth(200);
+
+        editTextStock.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                cambio = true;
+                if (editTextStock.getText().toString().trim().isEmpty()){
+                    listProductos.get(indice).setStock(0);
+                }else {
+                    Integer valor = Integer.parseInt(editTextStock.getText().toString());
+                    listProductos.get(indice).setStock(valor);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        return filaContenido;
+    }
+
+    private void updateTabla(){
+        BDHelper bdHelper = new BDHelper(ReportePreciosActivity.this, null);
+        SQLiteDatabase bd = bdHelper.getWritableDatabase();
+
+        for (Producto p: listProductos){
+            ContentValues registroProductos = new ContentValues();
+            registroProductos.put("nombre", p.getNombre());
+            registroProductos.put("p_costo", p.getpCosto());
+            registroProductos.put("p_mayor", p.getpMayor());
+            registroProductos.put("stock", p.getStock());
+
+            int cantidad = bd.update(bdHelper.getTableProductos(), registroProductos, "id = " + p.getId(), null);
+
+            if(cantidad==1){
+
+            }else{
+                Toast.makeText(ReportePreciosActivity.this, "Ocurrio un error al guardar los valores", Toast.LENGTH_SHORT).show();
+            }
+        }
+        bd.close();
     }
 }
