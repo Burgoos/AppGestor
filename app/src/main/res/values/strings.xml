@@ -13,6 +13,13 @@
     <string name="buscar">Buscar</string>
     <string name="reporte_precios">Reporte Precios</string>
     <string name="num_soporte">+51 938483565</string>
+    <string name="app_gestor">App Gestor</string>
+    <string name="xplora">Xplora</string>
+    <string name="vesrion">v.2.0.0</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="usuario">Usuario</string>
+    <string name="password">Password</string>
+    <string name="visitar">Visitar</string>
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_maps">Map</string>

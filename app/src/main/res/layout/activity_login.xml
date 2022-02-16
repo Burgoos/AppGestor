@@ -18,7 +18,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="APP GESTOR"
+            android:text="@string/app_gestor"
+            android:textAllCaps="true"
             android:textColor="@android:color/background_dark"
             android:textSize="24sp" />
 
@@ -26,7 +27,7 @@
             android:id="@+id/txtCorreoNavigationDrawer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xplora"
+            android:text="@string/xplora"
             android:textColor="@android:color/background_dark"
             android:textSize="20sp" />
 
@@ -34,7 +35,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="v.2.0.0"
+            android:text="@string/vesrion"
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
     </LinearLayout>
@@ -54,7 +55,7 @@
             android:layout_marginEnd="40dp"
             android:backgroundTint="@android:color/black"
             android:ems="10"
-            android:hint="Usuario"
+            android:hint="@string/usuario"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="@android:color/background_dark"
@@ -69,7 +70,7 @@
             android:layout_marginEnd="40dp"
             android:backgroundTint="@android:color/black"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textAlignment="center"
             android:textCursorDrawable="@android:color/black" />
@@ -81,7 +82,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@drawable/button_login"
-            android:text="Ingresar" />
+            android:text="@string/ingresar" />
     </LinearLayout>
 
 </LinearLayout>

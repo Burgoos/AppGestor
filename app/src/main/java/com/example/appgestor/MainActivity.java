@@ -1,19 +1,36 @@
 package com.example.appgestor;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appgestor.ui.soporte.SoporteFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,15 +40,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int CAMERA_REQUEST = 1888;
 
     SharedPreferences myPreferences;
     SharedPreferences.Editor myEditor;
     private AppBarConfiguration mAppBarConfiguration;
 
-    ImageView imgNavigationDrawer;
+    ImageView imgAdd, imgFoto;
     TextView txtNombreNavigationDrawer, txtCorreoNavigationDrawer;
-    
+    Bitmap foto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
         txtNombreNavigationDrawer =  (TextView) headerView.findViewById(R.id.txtNombreNavigationDrawer);
         txtCorreoNavigationDrawer = (TextView) headerView.findViewById(R.id.txtCorreoNavigationDrawer);
+        imgAdd= headerView.findViewById(R.id.imgAddNavigation);
+        imgFoto = headerView.findViewById(R.id.imgFotoNavigation);
+
         txtNombreNavigationDrawer.setText(nombre);
         txtCorreoNavigationDrawer.setText(correo);
 
@@ -91,6 +115,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCrop();
+            }
+        });
+
+    }
+
+    private void startCrop(){
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(4,4)
+                .start(MainActivity.this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(MainActivity.this.getContentResolver(), resultUri);
+                    foto = getCroppedBitmap(bitmap);
+                    imgFoto.setImageBitmap(foto);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 3, bitmap.getHeight() / 3,
+                bitmap.getWidth() / 3, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 
     @Override
