@@ -3,6 +3,8 @@ package com.example.appgestor;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.appgestor.clases.PuntoVenta;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
+        Log.d("MApa", pv.getLatitud() + " " + pv.getLongitud());
         LatLng location = new LatLng(pv.getLatitud(), pv.getLongitud());
         mMap.addMarker(new MarkerOptions().position(location).title(pv.getNombre()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
